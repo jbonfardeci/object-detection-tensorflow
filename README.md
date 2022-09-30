@@ -48,4 +48,4 @@ models = {
 
 <p>See <code>main.py</code> for usage of the pipeline and to execute samples.</p>
 
-<p><img src="./demo.png" alt="Demonstration Screenshot" style="width:70%;" /></p>
+<p><img src="./demo.png" alt="Demonstration Screenshot" /></p>
