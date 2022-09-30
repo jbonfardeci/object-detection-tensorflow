@@ -1,7 +1,3 @@
-<style language="text/css">
-h1, h2 {color: #A11015;}
-</style>
-
 <h1>Object Detection Pipeline Class for Tensorflow</h1>
 
 <h4>Demonstrates Object Detection and Classification with Pretrained Tensorflow Models</h4>
@@ -16,7 +12,17 @@ h1, h2 {color: #A11015;}
 
 <p>After installing, create a new Tensforflow environment by running at the command line:</p>
 
-`conda create -n tf python==3.9`
+```{bash}
+conda create -n tf python==3.9
+
+conda activate tf
+```
+
+<p>Be sure to install <a href="https://pypi.org/project/opencv-python/" target="_blank">OpenCV</a> after activating the environment.</p>
+
+```
+python3 -m pip install opencv-python
+```
 
 <h2>Install Tensorflow</h2>
 <p>You can read the installation instructions and install from <a href="https://www.tensorflow.org/install" target="_blank">Tensorflow.org</a></p>
