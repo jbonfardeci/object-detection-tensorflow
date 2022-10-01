@@ -31,20 +31,9 @@ python3 -m pip install opencv-python
 
 <p>This entry point for this repo is <code>main.py</code></p>
 
-<p>Pretrained model URLs for this demonstration can be obtained from the <a href="https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md" target="_blank">Tensorflow Models Repository</a></p>
+<h2>Refresh the Models</h2>
 
-<p>Example: Copy and paste a URL to the <code>models</code> dictionary object in <code>main.py</code>.</p>
-
-```{Python}
-models = {
-    'ssd_mobilenet': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_mobilenet_v2_320x320_coco17_tpu-8.tar.gz',
-    'efficientdet_d4': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/efficientdet_d4_coco17_tpu-32.tar.gz',
-    'faster_rcnn': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/faster_rcnn_resnet50_v1_1024x1024_coco17_tpu-8.tar.gz',
-    'mask_rcnn_inception_resnet': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/mask_rcnn_inception_resnet_v2_1024x1024_coco17_gpu-8.tar.gz',
-    'efficientdet_d7': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/efficientdet_d7_coco17_tpu-32.tar.gz',
-    'centernet_mobilenet': 'http://download.tensorflow.org/models/object_detection/tf2/20200711/centernet_resnet50_v2_512x512_coco17_tpu-8.tar.gz'
-}
-```
+<p>Run <code>refresh_model_urls.py</code> to update the models in <code>./resources/models.json</code>.</p>
 
 <p>See <code>main.py</code> for usage of the pipeline and to execute samples.</p>
 
