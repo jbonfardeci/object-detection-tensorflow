@@ -20,12 +20,13 @@ class ObjectDetector:
     model: Any = None
     cache_subdir: str = 'checkpoints'
 
-    def __init__(self, class_list: List[str], model_url: str, random_seed=42):
+    def __init__(self, class_list: List[str], model_url: str, random_seed: int=42):
         """
         Initiate the object detection pipeline.
         
         @param class_list: List[str] - list of class names
         @param model_url: str - the URL of the pretrained model to download and use.
+        @param random_seed: int = 42
         @returns ObjectDetector
         """
         np.random.seed(random_seed)
