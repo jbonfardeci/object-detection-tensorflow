@@ -22,6 +22,8 @@ if __name__ == '__main__':
     video_dir = f'{media_dir}/video'
     image_out_dir = f'{media_dir}/image_out'
     video_out_dir = f'{media_dir}/video_out'
+
+    # Load the class names for our detected objects.
     class_names = u.get_file_data('./coco.names')
 
     # Load the pre-trained Tensorflow models from JSON.
@@ -30,12 +32,15 @@ if __name__ == '__main__':
     # Load your chosen model for object detection.
     selected_model = models['mask_r-cnn_inception_resnet_v2_1024x1024']
 
+    # Get list of videos from the media folder.
     video_paths = u.get_file_list(video_dir)
+
+    # Get list of images from the media folder.
     image_paths = u.get_file_list(image_dir)
 
-    img_args = {
-        'filepath': f'{image_dir}/mountain-bikes.jpg',
-        'output_path': f'{image_out_dir}/mountain-bikes.jpg',
+    base_args = {
+        'filepath': None,       # Image/video to detect.
+        'output_path': None,    # Where to output the results.
         'write_file': True,     # Save rendered file to folder.
         'show_file': True,      # Show realtime rendering.
         'threshold': 0.5,       # lower number = more bounding boxes
@@ -44,28 +49,28 @@ if __name__ == '__main__':
         'draw_corners': False   # Emphasize corners on bounding box.
     }
 
-    video_args = {
-        'filepath': f'{video_dir}/gallion.mp4',
-        'output_path': f'{video_out_dir}/gallion.mp4',
-        'write_file': True,     # Save rendered file to folder.
-        'show_file': True,      # Show realtime rendering.
-        'threshold': 0.1,       # lower number = more bounding boxes
-        'max_output_size': 100, # higher number = more bounding boxes
-        'line_thickness': 1,    # Thickness of bounding box line.
-        'draw_corners': False   # Emphasize corners on bounding box.
-    }
+    # Arguments for detecting objects in images.
+    img_args = base_args.copy()
+    img_args['filepath'] = f'{image_dir}/mountain-bikes.jpg'
+    img_args['output_path'] = f'{image_out_dir}/mountain-bikes.jpg'
 
+    # Arguments for detecting objects in videos.
+    video_args = base_args.copy()
+    video_args['filepath'] = f'{video_dir}/gallion.mp4'
+    video_args['output_path'] = f'{video_out_dir}/gallion.mp4'
+
+    # Setup the object detection pipeline.
     from detector import ObjectDetector
 
-    detector = ObjectDetector(class_names, selected_model)
+    detector = ObjectDetector(class_names, selected_model, 777)
 
-    # # Process video
+    # Process an image.
+    detector.predict_image(**img_args)
+
+    # Process a video.
     detector.predict_video(**video_args)
 
-    # # Process Image
-    detector.predict_image(**img_args)
-    
-    # # Process image batch
+    # Process a batch of images.
     img_args['show_file'] = False
     for image_path in image_paths:
         img_args['filepath'] = image_path
