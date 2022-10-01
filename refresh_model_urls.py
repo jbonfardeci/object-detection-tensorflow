@@ -12,15 +12,20 @@ if __name__ == '__main__':
     filename = './resources/models.txt'
     models_text = u.get_html(url, filename)
     model_data: List[str] = u.get_file_data(filename)
-    start_index = [i for i in range(len(model_data)) if re.match(r'-+', model_data[i])][0]+1
+    # All model names and URLs appear after the '-----' line.
+    # Get the start index after this line.
+    start_index = [i for i in range(len(model_data)) if re.match(r'-+', model_data[i])][0] + 1
     models = {}
 
     for line in model_data[start_index:]:
+        # Match the Markdown pattern for URLs where [Title](http://www.domain.com/path).
         model = re.findall(r'^\[.+\]\(.+\)', line)[:1]
         if model:
             model_name, model_url = model[0].split(']')
             model_name = re.sub(r'[^a-z0-9]', '_', model_name[1:].lower()).strip()
             model_url = re.sub(r'\(|\)', '', model_url).strip()
+            print('Model name:', model_name)
+            print('Model URL:', model_url)
             models[model_name] = model_url
 
     if len(models.keys()) > 0:
