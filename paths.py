@@ -16,7 +16,7 @@ def get_path(path) -> str:
     p[VIDEO_DIR] = f'{media_dir}/video'
     p[IMAGE_OUT_DIR] = f'{media_dir}/image_out'
     p[VIDEO_OUT_DIR] = f'{media_dir}/video_out'
-    p[COCO_NAMES] = './coco.names'
+    p[COCO_NAMES] = './resources/coco.names'
     p[MODELS_JSON] = './resources/models.json'
     p[MODELS_TXT] = './resources/models.txt'
     

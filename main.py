@@ -37,7 +37,7 @@ def get_detector(model_name: str=None) -> ObjectDetector:
     selected_model = models[model_name]
 
     # Setup the object detection pipeline.
-    return ObjectDetector(class_names, selected_model, 123)
+    return ObjectDetector(class_names, selected_model, 777)
     
     
 def detect_image(args: Dict, model_name: str=None) -> None:
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     model_name = 'faster_r_cnn_inception_resnet_v2_1024x1024'
     
     # Arguments for detecting objects in an image.
-    img_filename = 'mountain-bikes.jpg'
+    img_filename = 'watch-drawing.png'
     img_args = base_args.copy()
     img_args['filepath'] = f'{image_dir}/{img_filename}'
     img_args['output_path'] = f'{image_out_dir}/{img_filename}'
@@ -99,4 +99,4 @@ if __name__ == '__main__':
     video_args = base_args.copy()
     video_args['filepath'] = f'{video_dir}/{video_filename}'
     video_args['output_path'] = f'{video_out_dir}/{video_filename}'
-    detect_video(video_args, model_name)
+    #detect_video(video_args, model_name)
