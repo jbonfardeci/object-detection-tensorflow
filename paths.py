@@ -6,6 +6,7 @@ VIDEO_DIR = 'VIDEO_DIR'
 VIDEO_OUT_DIR = 'VIDEO_OUT_DIR'
 COCO_NAMES = 'COCO_NAMES'
 MODELS_JSON = 'MODELS_JSON'
+MODELS_TXT = 'MODELS_TXT'
 
 def get_path(path) -> str:
     media_dir = './media'
@@ -17,6 +18,7 @@ def get_path(path) -> str:
     p[VIDEO_OUT_DIR] = f'{media_dir}/video_out'
     p[COCO_NAMES] = './coco.names'
     p[MODELS_JSON] = './resources/models.json'
+    p[MODELS_TXT] = './resources/models.txt'
     
     if path in p:
         return p[path]

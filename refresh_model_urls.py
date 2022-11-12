@@ -1,6 +1,7 @@
 import utilities as u
 import re
-from typing import List, Dict
+from typing import List
+import paths
 
 """
 Run this file to download all Tensorflow model names and URLs 
@@ -9,7 +10,7 @@ and store them in a JSON file in the './resources' directory.
 
 if __name__ == '__main__':
     url = 'https://raw.githubusercontent.com/tensorflow/models/master/research/object_detection/g3doc/tf2_detection_zoo.md'
-    filename = './resources/models.txt'
+    filename = paths.get_path(paths.MODELS_TXT)
     models_text = u.get_html(url, filename)
     model_data: List[str] = u.get_file_data(filename)
     # All model names and URLs appear after the '-----' line.
@@ -29,4 +30,4 @@ if __name__ == '__main__':
             models[model_name] = model_url
 
     if len(models.keys()) > 0:
-        u.write_json(models, './resources/models.json', 4)
+        u.write_json(models, paths.get_path(paths.MODELS_JSON), 4)
