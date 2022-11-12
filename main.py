@@ -61,7 +61,7 @@ def detect_video(args: Dict, model_name: str=None) -> None:
     """
     u.check_filepath(args['filepath'])
     detector = get_detector(model_name)
-    detector.predict_image(**args)
+    detector.predict_video(**args)
 
 
 if __name__ == '__main__':
@@ -85,18 +85,18 @@ if __name__ == '__main__':
     }
 
     # See `./resources/models.json` for all available models.
-    model_name = 'faster_r_cnn_inception_resnet_v2_1024x1024'
+    model_name = 'faster_r_cnn_resnet50_v1_640x640'
     
     # Arguments for detecting objects in an image.
-    img_filename = 'watch-drawing.png'
+    img_filename = 'mountain-biker.png'
     img_args = base_args.copy()
     img_args['filepath'] = f'{image_dir}/{img_filename}'
     img_args['output_path'] = f'{image_out_dir}/{img_filename}'
     detect_image(img_args, model_name)
     
     # Arguments for detecting objects in a video.
-    video_filename = 'gallion.mp4'
+    video_filename = 'dog-on-boat.mp4'
     video_args = base_args.copy()
     video_args['filepath'] = f'{video_dir}/{video_filename}'
     video_args['output_path'] = f'{video_out_dir}/{video_filename}'
-    #detect_video(video_args, model_name)
+    detect_video(video_args, model_name)
