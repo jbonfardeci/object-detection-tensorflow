@@ -2,8 +2,12 @@ import tensorflow as tf
 import os
 from typing import List, Dict
 import utilities as u
+from ObjectDetector import ObjectDetector
+import paths
 
-def env_config():
+
+def env_config() -> None:
+    """Check Tensorflow environment."""
     print(tf.version.VERSION)
 
     os.environ['CUDA_VISIBLE_DEVICES'] ="0"
@@ -12,31 +16,62 @@ def env_config():
         print("TensorFlow **IS** using the GPU")
     else:
         print("TensorFlow **IS NOT** using the GPU")
+    
+    
+def get_detector(model_name: str=None) -> ObjectDetector:
+    """
+    Get a configured instance of ObjectDetector
+    @param model_name: str (Default is 'faster_r_cnn_inception_resnet_v2_1024x1024')
+    @returns ObjectDetector
+    """
+    if model_name is None:
+        model_name = 'faster_r_cnn_inception_resnet_v2_1024x1024'
+        
+    # Load the class names for our detected objects.
+    class_names = u.get_file_data(paths.get_path(paths.COCO_NAMES))
+
+    # Load the pre-trained Tensorflow models from JSON.
+    models: Dict = u.get_json(paths.get_path(paths.MODELS_JSON))
+
+    # Load your chosen model for object detection.
+    selected_model = models[model_name]
+
+    # Setup the object detection pipeline.
+    return ObjectDetector(class_names, selected_model, 123)
+    
+    
+def detect_image(args: Dict, model_name: str=None) -> None:
+    """
+    Draw bounding boxes and label objects in an image.
+    @param args: Dict
+    @param model_name: str (Optional)
+    @returns None
+    """
+    u.check_filepath(args['filepath'])
+    detector = get_detector(model_name)
+    detector.predict_image(**args)
+
+
+def detect_video(args: Dict, model_name: str=None) -> None:
+    """
+    Draw bounding boxes and label objects in a video.
+    @param args: Dict
+    @param model_name: str (Optional)
+    @returns None
+    """
+    u.check_filepath(args['filepath'])
+    detector = get_detector(model_name)
+    detector.predict_image(**args)
 
 
 if __name__ == '__main__':
+    """Entry Point"""
     env_config()
 
-    media_dir = './media'
-    image_dir = f'{media_dir}/images'
-    video_dir = f'{media_dir}/video'
-    image_out_dir = f'{media_dir}/image_out'
-    video_out_dir = f'{media_dir}/video_out'
-
-    # Load the class names for our detected objects.
-    class_names = u.get_file_data('./coco.names')
-
-    # Load the pre-trained Tensorflow models from JSON.
-    models: Dict = u.get_json('./resources/models.json')
-
-    # Load your chosen model for object detection.
-    selected_model = models['mask_r-cnn_inception_resnet_v2_1024x1024']
-
-    # Get list of videos from the media folder.
-    video_paths = u.get_file_list(video_dir)
-
-    # Get list of images from the media folder.
-    image_paths = u.get_file_list(image_dir)
+    image_dir = paths.get_path(paths.IMAGE_DIR)
+    video_dir = paths.get_path(paths.VIDEO_DIR)
+    image_out_dir = paths.get_path(paths.IMAGE_OUT_DIR)
+    video_out_dir = paths.get_path(paths.VIDEO_OUT_DIR)
 
     base_args = {
         'filepath': None,       # Image/video to detect.
@@ -49,32 +84,19 @@ if __name__ == '__main__':
         'draw_corners': False   # Emphasize corners on bounding box.
     }
 
-    # Arguments for detecting objects in images.
+    # See `./resources/models.json` for all available models.
+    model_name = 'faster_r_cnn_inception_resnet_v2_1024x1024'
+    
+    # Arguments for detecting objects in an image.
+    img_filename = 'mountain-bikes.jpg'
     img_args = base_args.copy()
-    img_args['filepath'] = f'{image_dir}/mountain-bikes.jpg'
-    img_args['output_path'] = f'{image_out_dir}/mountain-bikes.jpg'
-
-    # Arguments for detecting objects in videos.
+    img_args['filepath'] = f'{image_dir}/{img_filename}'
+    img_args['output_path'] = f'{image_out_dir}/{img_filename}'
+    detect_image(img_args, model_name)
+    
+    # Arguments for detecting objects in a video.
+    video_filename = 'gallion.mp4'
     video_args = base_args.copy()
-    video_args['filepath'] = f'{video_dir}/gallion.mp4'
-    video_args['output_path'] = f'{video_out_dir}/gallion.mp4'
-
-    # Setup the object detection pipeline.
-    from detector import ObjectDetector
-
-    detector = ObjectDetector(class_names, selected_model, 777)
-
-    # Process an image.
-    detector.predict_image(**img_args)
-
-    # Process a video.
-    detector.predict_video(**video_args)
-
-    # Process a batch of images.
-    img_args['show_file'] = False
-    for image_path in image_paths:
-        img_args['filepath'] = image_path
-        filename = os.path.basename(image_path)
-        img_args['output_path'] = f'{image_out_dir}/{filename}'
-        detector.predict_image(**img_args)
-    # for
+    video_args['filepath'] = f'{video_dir}/{video_filename}'
+    video_args['output_path'] = f'{video_out_dir}/{video_filename}'
+    detect_video(video_args, model_name)

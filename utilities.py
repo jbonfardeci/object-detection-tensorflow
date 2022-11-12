@@ -6,10 +6,13 @@ from urllib3.response import HTTPResponse
 import urllib3 as urllib
 from typing import List, Dict, Any
 
+def check_filepath(filepath) -> None:
+    if not os.path.exists(filepath):
+        raise Exception(f'{filepath} does not exist!')
+
 
 def get_file(filepath: str) -> str:
-    if not os.path.exists(filepath):
-        raise Exception(f'The file at {filepath} does not exist!')
+    check_filepath(filepath)
     with open(filepath, 'r', encoding='utf-8') as f:
         return f.read()
 
